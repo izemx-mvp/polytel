@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Visuel produit indisponible">
+  <rect width="400" height="300" fill="#eef1f5"/>
+  <g fill="none" stroke="#b9c2cd" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="120" y="110" width="160" height="90" rx="10" fill="#f6f7f9"/>
+    <path d="M150 110 V95 a8 8 0 0 1 8-8 h84 a8 8 0 0 1 8 8 v15"/>
+    <rect x="140" y="145" width="46" height="30" rx="4" fill="#e4e9ef" stroke="none"/>
+    <circle cx="252" cy="160" r="10" fill="#e4e9ef" stroke="none"/>
+    <path d="M150 200 v14 a8 8 0 0 0 8 8 h84 a8 8 0 0 0 8-8 v-14"/>
+  </g>
+  <text x="200" y="252" text-anchor="middle" font-family="monospace" font-size="15" fill="#98a3b0">Visuel à venir</text>
+</svg>
