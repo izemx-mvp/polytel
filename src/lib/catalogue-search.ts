@@ -1,10 +1,9 @@
-/** Paramètres d'URL du catalogue, synchronisés avec le routeur. */
 export interface CatalogueSearch {
-  q?: string;
-  marque?: string;
-  badge?: string;
-  sub?: string;
-  tri?: string;
+  q?: string | undefined;
+  marque?: string | undefined;
+  badge?: string | undefined;
+  sub?: string | undefined;
+  tri?: string | undefined;
 }
 
 function str(v: unknown): string | undefined {
