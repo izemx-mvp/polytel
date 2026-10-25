@@ -150,8 +150,8 @@ function SearchBox({ className, onNavigate }: { className?: string; onNavigate?:
 /* ---------------- Mega menu Produits ---------------- */
 
 function MegaMenu() {
-  const [active, setActive] = useState(categories[0].slug);
-  const current = categories.find((c) => c.slug === active) ?? categories[0];
+  const [active, setActive] = useState<string>(categories[0]?.slug ?? "impression");
+  const current = categories.find((c) => c.slug === active) ?? categories[0]!;
 
   return (
     <div className="invisible absolute top-full left-0 z-40 w-screen max-w-4xl translate-y-1 opacity-0 transition-all duration-200 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
