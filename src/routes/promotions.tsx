@@ -71,14 +71,14 @@ function Spotlight({ items }: { items: Product[] }) {
 
   return (
     <div
-      className="relative"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      className="relative min-w-0"
+      onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
       {/* Carte principale */}
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-card text-foreground shadow-[0_50px_100px_-40px_oklch(0_0_0/80%)]">
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-card text-foreground shadow-[0_50px_100px_-40px_oklch(0_0_0/80%)] sm:rounded-3xl">
         <div className="product-surface relative aspect-[4/3] overflow-hidden sm:aspect-[16/11]">
           <div className="scan-head" aria-hidden />
           <AnimatePresence mode="wait" initial={false}>
@@ -86,7 +86,7 @@ function Spotlight({ items }: { items: Product[] }) {
               key={current.id}
               initial={reduced ? false : { opacity: 0, scale: 0.94, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              {...(!reduced && { exit: { opacity: 0, scale: 1.03, y: -8 } })}
+              {...(reduced ? {} : { exit: { opacity: 0, scale: 1.03, y: -8 } })}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0"
             >
@@ -96,48 +96,48 @@ function Spotlight({ items }: { items: Product[] }) {
                 width={640}
                 height={440}
                 className="size-full"
-                imgClassName="p-8 sm:p-10"
+                imgClassName="p-6 sm:p-10"
               />
             </motion.div>
           </AnimatePresence>
 
           {/* Tampon promo */}
-          <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-cta px-3 py-1 text-xs font-semibold text-cta-foreground shadow-sm">
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-cta px-3 py-1 sm:top-4 sm:left-4 text-xs font-semibold text-cta-foreground shadow-sm">
             <Tag className="size-3.5" aria-hidden />
             Promo
           </div>
-          <div className="absolute top-4 right-4 rounded-full border border-border bg-card/90 px-2.5 py-1 font-mono text-[11px] text-muted-foreground backdrop-blur">
+          <div className="absolute top-3 right-3 rounded-full sm:top-4 sm:right-4 border border-border bg-card/90 px-2.5 py-1 font-mono text-[11px] text-muted-foreground backdrop-blur">
             {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </div>
         </div>
 
-        <div className="border-t border-border p-5 sm:p-6">
+        <div className="border-t border-border p-4 sm:p-6">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={current.id}
               initial={reduced ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
               {...(reduced ? {} : { exit: { opacity: 0, y: -6 } })}
-              className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+              transition={{ duration: 0.3 }}
+              className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-end xl:justify-between"
             >
               <div className="min-w-0">
-                <div className="flex items-center gap-3">
-                  <BrandLogo slug={current.brand} size="sm" className="h-4" />
+                <div className="flex min-w-0 items-center gap-3">
+                  <BrandLogo slug={current.brand} size="sm" className="h-4 shrink-0" />
                   <span className="truncate text-xs text-muted-foreground">
                     {universeName(current.universe)}
                   </span>
                 </div>
-                <p className="mt-2 truncate font-display text-xl font-semibold">{current.name}</p>
+                <p className="mt-2 line-clamp-2 font-display text-lg font-semibold break-words sm:line-clamp-1 sm:text-xl">{current.name}</p>
                 <p className="mt-0.5 font-mono text-xs text-muted-foreground">{current.reference}</p>
               </div>
-              <div className="flex shrink-0 gap-2">
-                <Button variant="outline" size="lg" asChild>
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0">
+                <Button variant="outline" size="lg" className="px-3 sm:px-6" asChild>
                   <Link to="/produit/$slug" params={{ slug: current.slug }}>
                     Voir la fiche
                   </Link>
                 </Button>
-                <Button variant="cta" size="lg" asChild>
+                <Button variant="cta" size="lg" className="px-3 sm:px-6" asChild>
                   <Link to="/devis">
                     Mes conditions
                     <ArrowRight aria-hidden />
@@ -152,7 +152,7 @@ function Spotlight({ items }: { items: Product[] }) {
       {/* Sélecteur + progression */}
       {items.length > 1 && (
         <div
-          className="no-scrollbar -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1"
+          className="no-scrollbar mt-4 flex max-w-full gap-2 overflow-x-auto pb-1 [scrollbar-width:none]"
           role="tablist"
           aria-label="Produits en promotion"
         >
@@ -173,7 +173,7 @@ function Spotlight({ items }: { items: Product[] }) {
                 product={p}
                 width={64}
                 height={64}
-                className="product-surface size-14 sm:size-16"
+                className="product-surface size-12 sm:size-16"
                 imgClassName="p-1.5"
               />
               {i === index && autoplay && (
@@ -249,7 +249,7 @@ function Hero() {
         PROMO
       </p>
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-8 pb-16 sm:px-6 md:pb-20 lg:px-8 lg:pb-24">
+      <div className="relative mx-auto max-w-7xl px-4 pt-6 pb-12 sm:px-6 sm:pt-8 md:pb-20 lg:px-8 lg:pb-24">
         <nav aria-label="Fil d'Ariane" className="text-xs text-ink-muted">
           <ol className="flex items-center gap-1.5">
             <li>
@@ -266,8 +266,8 @@ function Hero() {
           </ol>
         </nav>
 
-        <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-10">
-          <div className="lg:col-span-6">
+        <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-12 lg:items-center lg:gap-10">
+          <div className="min-w-0 lg:col-span-6">
             <p className="inline-flex animate-in items-center gap-2 rounded-full border border-ink-border bg-white/5 py-1 pr-3 pl-1 text-xs font-medium duration-700 fade-in fill-mode-both motion-reduce:animate-none">
               <span className="relative inline-flex size-5 items-center justify-center rounded-full bg-cta">
                 <span className="absolute inset-0 animate-ping rounded-full bg-cta opacity-40 motion-reduce:animate-none" />
@@ -275,41 +275,41 @@ function Hero() {
               </span>
               Offres du moment
             </p>
-            <h1 className="display-xl mt-6 animate-in text-balance delay-100 duration-700 fade-in slide-in-from-bottom-4 fill-mode-both motion-reduce:animate-none">
+            <h1 className="display-xl mt-6 animate-in text-balance break-words hyphens-auto max-sm:text-[clamp(2rem,9.5vw,3rem)] max-sm:leading-[1.05] delay-100 duration-700 fade-in slide-in-from-bottom-4 fill-mode-both motion-reduce:animate-none">
               Promotions <span className="text-cta">professionnelles</span>
             </h1>
-            <p className="mt-6 max-w-lg animate-in text-base leading-relaxed text-ink-muted delay-200 duration-700 fade-in slide-in-from-bottom-4 fill-mode-both motion-reduce:animate-none md:text-lg">
+            <p className="mt-5 max-w-lg animate-in text-[15px] sm:mt-6 sm:text-base leading-relaxed text-ink-muted delay-200 duration-700 fade-in slide-in-from-bottom-4 fill-mode-both motion-reduce:animate-none md:text-lg">
               Une sélection d'équipements d'origine en promotion, réservée aux professionnels.
               Ajoutez vos références au devis : nos conseillers vous communiquent les conditions.
             </p>
 
-            <dl className="mt-8 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-2xl border border-ink-border bg-ink-border">
+            <dl className="mt-7 grid max-w-lg grid-cols-3 sm:mt-8 gap-px overflow-hidden rounded-2xl border border-ink-border bg-ink-border">
               {[
                 { k: "Offres", v: String(count) },
                 { k: "Marques", v: String(promoBrands.length) },
                 { k: "Origine", v: "100 %" },
               ].map((s) => (
-                <div key={s.k} className="bg-ink-card px-4 py-4">
+                <div key={s.k} className="min-w-0 bg-ink-card px-3 py-3 sm:px-4 sm:py-4">
                   <dt className="font-mono text-[10px] tracking-wider text-ink-muted uppercase">{s.k}</dt>
-                  <dd className="mt-1 font-display text-2xl font-bold">{s.v}</dd>
+                  <dd className="mt-1 font-display text-xl font-bold sm:text-2xl">{s.v}</dd>
                 </div>
               ))}
             </dl>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button variant="cta" size="xl" asChild>
+            <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row">
+              <Button variant="cta" size="xl" className="w-full sm:w-auto" asChild>
                 <a href="#offres">
                   Voir toutes les offres
                   <ArrowDown aria-hidden />
                 </a>
               </Button>
-              <Button variant="ghost-dark" size="xl" asChild>
+              <Button variant="ghost-dark" size="xl" className="w-full sm:w-auto" asChild>
                 <Link to="/devis">Demander mes conditions</Link>
               </Button>
             </div>
 
             {promoBrands.length > 0 && (
-              <ul className="mt-10 flex flex-wrap items-center gap-2" aria-label="Marques en promotion">
+              <ul className="mt-8 flex flex-wrap items-center gap-2 sm:mt-10" aria-label="Marques en promotion">
                 {promoBrands.map((slug) => (
                   <li key={slug}>
                     <Link
@@ -326,7 +326,7 @@ function Hero() {
             )}
           </div>
 
-          <div className="lg:col-span-6">
+          <div className="min-w-0 lg:col-span-6">
             {count > 0 ? (
               <Spotlight items={promoPool} />
             ) : (
@@ -360,7 +360,7 @@ function PromotionsPage() {
           className="mx-auto grid max-w-7xl divide-y divide-border px-4 sm:px-6 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-8"
         >
           {steps.map((s, i) => (
-            <RevealItem as="li" key={s.title} className="flex items-center gap-4 py-6 md:px-6 md:first:pl-0">
+            <RevealItem as="li" key={s.title} className="flex min-w-0 items-center gap-4 py-5 md:px-6 md:py-6 md:first:pl-0">
               <span className="relative inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-tint text-primary">
                 <s.icon className="size-5" aria-hidden />
                 <span className="absolute -top-1.5 -right-1.5 inline-flex size-5 items-center justify-center rounded-full bg-primary font-mono text-[10px] font-semibold text-primary-foreground">
@@ -378,7 +378,7 @@ function PromotionsPage() {
 
       {/* Catalogue des offres */}
       <div id="offres" className="scroll-mt-24">
-        <div className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 md:pt-20 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 pt-12 sm:px-6 md:pt-20 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="eyebrow text-muted-foreground">
