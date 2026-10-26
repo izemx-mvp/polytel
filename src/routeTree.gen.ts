@@ -10,43 +10,311 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProduitsRouteImport } from './routes/produits'
+import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as CataloguesRouteImport } from './routes/catalogues'
+import { Route as CgvRouteImport } from './routes/cgv'
+import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DestockageRouteImport } from './routes/destockage'
+import { Route as DevisRouteImport } from './routes/devis'
+import { Route as EspaceClientRouteImport } from './routes/espace-client'
+import { Route as EspaceCoutureRouteImport } from './routes/espace-couture'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
+import { Route as PromotionsRouteImport } from './routes/promotions'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as MarquesIndexRouteImport } from './routes/marques/index'
+import { Route as MarquesSlugRouteImport } from './routes/marques/$slug'
+import { Route as ProduitSlugRouteImport } from './routes/produit/$slug'
+import { Route as ProduitsIndexRouteImport } from './routes/produits/index'
+import { Route as ProduitsUniversIndexRouteImport } from './routes/produits/$univers/index'
+import { Route as ProduitsUniversSousCategorieRouteImport } from './routes/produits/$univers/$sousCategorie'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProduitsRoute = ProduitsRouteImport.update({
-  id: '/produits',
-  path: '/produits',
+const AProposRoute = AProposRouteImport.update({
+  id: '/a-propos',
+  path: '/a-propos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CataloguesRoute = CataloguesRouteImport.update({
+  id: '/catalogues',
+  path: '/catalogues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CgvRoute = CgvRouteImport.update({
+  id: '/cgv',
+  path: '/cgv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DestockageRoute = DestockageRouteImport.update({
+  id: '/destockage',
+  path: '/destockage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevisRoute = DevisRouteImport.update({
+  id: '/devis',
+  path: '/devis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceClientRoute = EspaceClientRouteImport.update({
+  id: '/espace-client',
+  path: '/espace-client',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceCoutureRoute = EspaceCoutureRouteImport.update({
+  id: '/espace-couture',
+  path: '/espace-couture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromotionsRoute = PromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarquesIndexRoute = MarquesIndexRouteImport.update({
+  id: '/marques/',
+  path: '/marques/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarquesSlugRoute = MarquesSlugRouteImport.update({
+  id: '/marques/$slug',
+  path: '/marques/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitSlugRoute = ProduitSlugRouteImport.update({
+  id: '/produit/$slug',
+  path: '/produit/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsIndexRoute = ProduitsIndexRouteImport.update({
+  id: '/produits/',
+  path: '/produits/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsUniversIndexRoute = ProduitsUniversIndexRouteImport.update({
+  id: '/produits/$univers/',
+  path: '/produits/$univers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsUniversSousCategorieRoute =
+  ProduitsUniversSousCategorieRouteImport.update({
+    id: '/produits/$univers/$sousCategorie',
+    path: '/produits/$univers/$sousCategorie',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/produits': typeof ProduitsRoute
+  '/a-propos': typeof AProposRoute
+  '/catalogues': typeof CataloguesRoute
+  '/cgv': typeof CgvRoute
+  '/connexion': typeof ConnexionRoute
+  '/contact': typeof ContactRoute
+  '/destockage': typeof DestockageRoute
+  '/devis': typeof DevisRoute
+  '/espace-client': typeof EspaceClientRoute
+  '/espace-couture': typeof EspaceCoutureRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/promotions': typeof PromotionsRoute
+  '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/marques/$slug': typeof MarquesSlugRoute
+  '/produit/$slug': typeof ProduitSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/marques/': typeof MarquesIndexRoute
+  '/produits/': typeof ProduitsIndexRoute
+  '/produits/$univers/$sousCategorie': typeof ProduitsUniversSousCategorieRoute
+  '/produits/$univers/': typeof ProduitsUniversIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/produits': typeof ProduitsRoute
+  '/a-propos': typeof AProposRoute
+  '/catalogues': typeof CataloguesRoute
+  '/cgv': typeof CgvRoute
+  '/connexion': typeof ConnexionRoute
+  '/contact': typeof ContactRoute
+  '/destockage': typeof DestockageRoute
+  '/devis': typeof DevisRoute
+  '/espace-client': typeof EspaceClientRoute
+  '/espace-couture': typeof EspaceCoutureRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/promotions': typeof PromotionsRoute
+  '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/marques/$slug': typeof MarquesSlugRoute
+  '/produit/$slug': typeof ProduitSlugRoute
+  '/blog': typeof BlogIndexRoute
+  '/marques': typeof MarquesIndexRoute
+  '/produits': typeof ProduitsIndexRoute
+  '/produits/$univers/$sousCategorie': typeof ProduitsUniversSousCategorieRoute
+  '/produits/$univers': typeof ProduitsUniversIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/produits': typeof ProduitsRoute
+  '/a-propos': typeof AProposRoute
+  '/catalogues': typeof CataloguesRoute
+  '/cgv': typeof CgvRoute
+  '/connexion': typeof ConnexionRoute
+  '/contact': typeof ContactRoute
+  '/destockage': typeof DestockageRoute
+  '/devis': typeof DevisRoute
+  '/espace-client': typeof EspaceClientRoute
+  '/espace-couture': typeof EspaceCoutureRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/promotions': typeof PromotionsRoute
+  '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/marques/$slug': typeof MarquesSlugRoute
+  '/produit/$slug': typeof ProduitSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/marques/': typeof MarquesIndexRoute
+  '/produits/': typeof ProduitsIndexRoute
+  '/produits/$univers/$sousCategorie': typeof ProduitsUniversSousCategorieRoute
+  '/produits/$univers/': typeof ProduitsUniversIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/produits'
+  fullPaths:
+    | '/'
+    | '/a-propos'
+    | '/catalogues'
+    | '/cgv'
+    | '/connexion'
+    | '/contact'
+    | '/destockage'
+    | '/devis'
+    | '/espace-client'
+    | '/espace-couture'
+    | '/mentions-legales'
+    | '/promotions'
+    | '/services'
+    | '/sitemap.xml'
+    | '/blog/$slug'
+    | '/marques/$slug'
+    | '/produit/$slug'
+    | '/blog/'
+    | '/marques/'
+    | '/produits/'
+    | '/produits/$univers/$sousCategorie'
+    | '/produits/$univers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/produits'
-  id: '__root__' | '/' | '/produits'
+  to:
+    | '/'
+    | '/a-propos'
+    | '/catalogues'
+    | '/cgv'
+    | '/connexion'
+    | '/contact'
+    | '/destockage'
+    | '/devis'
+    | '/espace-client'
+    | '/espace-couture'
+    | '/mentions-legales'
+    | '/promotions'
+    | '/services'
+    | '/sitemap.xml'
+    | '/blog/$slug'
+    | '/marques/$slug'
+    | '/produit/$slug'
+    | '/blog'
+    | '/marques'
+    | '/produits'
+    | '/produits/$univers/$sousCategorie'
+    | '/produits/$univers'
+  id:
+    | '__root__'
+    | '/'
+    | '/a-propos'
+    | '/catalogues'
+    | '/cgv'
+    | '/connexion'
+    | '/contact'
+    | '/destockage'
+    | '/devis'
+    | '/espace-client'
+    | '/espace-couture'
+    | '/mentions-legales'
+    | '/promotions'
+    | '/services'
+    | '/sitemap.xml'
+    | '/blog/$slug'
+    | '/marques/$slug'
+    | '/produit/$slug'
+    | '/blog/'
+    | '/marques/'
+    | '/produits/'
+    | '/produits/$univers/$sousCategorie'
+    | '/produits/$univers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProduitsRoute: typeof ProduitsRoute
+  AProposRoute: typeof AProposRoute
+  CataloguesRoute: typeof CataloguesRoute
+  CgvRoute: typeof CgvRoute
+  ConnexionRoute: typeof ConnexionRoute
+  ContactRoute: typeof ContactRoute
+  DestockageRoute: typeof DestockageRoute
+  DevisRoute: typeof DevisRoute
+  EspaceClientRoute: typeof EspaceClientRoute
+  EspaceCoutureRoute: typeof EspaceCoutureRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
+  PromotionsRoute: typeof PromotionsRoute
+  ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BlogSlugRoute: typeof BlogSlugRoute
+  MarquesSlugRoute: typeof MarquesSlugRoute
+  ProduitSlugRoute: typeof ProduitSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  MarquesIndexRoute: typeof MarquesIndexRoute
+  ProduitsIndexRoute: typeof ProduitsIndexRoute
+  ProduitsUniversSousCategorieRoute: typeof ProduitsUniversSousCategorieRoute
+  ProduitsUniversIndexRoute: typeof ProduitsUniversIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,11 +326,151 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/produits': {
-      id: '/produits'
+    '/a-propos': {
+      id: '/a-propos'
+      path: '/a-propos'
+      fullPath: '/a-propos'
+      preLoaderRoute: typeof AProposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogues': {
+      id: '/catalogues'
+      path: '/catalogues'
+      fullPath: '/catalogues'
+      preLoaderRoute: typeof CataloguesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cgv': {
+      id: '/cgv'
+      path: '/cgv'
+      fullPath: '/cgv'
+      preLoaderRoute: typeof CgvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/destockage': {
+      id: '/destockage'
+      path: '/destockage'
+      fullPath: '/destockage'
+      preLoaderRoute: typeof DestockageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devis': {
+      id: '/devis'
+      path: '/devis'
+      fullPath: '/devis'
+      preLoaderRoute: typeof DevisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace-client': {
+      id: '/espace-client'
+      path: '/espace-client'
+      fullPath: '/espace-client'
+      preLoaderRoute: typeof EspaceClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace-couture': {
+      id: '/espace-couture'
+      path: '/espace-couture'
+      fullPath: '/espace-couture'
+      preLoaderRoute: typeof EspaceCoutureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promotions': {
+      id: '/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof PromotionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marques/': {
+      id: '/marques/'
+      path: '/marques'
+      fullPath: '/marques/'
+      preLoaderRoute: typeof MarquesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marques/$slug': {
+      id: '/marques/$slug'
+      path: '/marques/$slug'
+      fullPath: '/marques/$slug'
+      preLoaderRoute: typeof MarquesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produit/$slug': {
+      id: '/produit/$slug'
+      path: '/produit/$slug'
+      fullPath: '/produit/$slug'
+      preLoaderRoute: typeof ProduitSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits/': {
+      id: '/produits/'
       path: '/produits'
-      fullPath: '/produits'
-      preLoaderRoute: typeof ProduitsRouteImport
+      fullPath: '/produits/'
+      preLoaderRoute: typeof ProduitsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits/$univers/': {
+      id: '/produits/$univers/'
+      path: '/produits/$univers'
+      fullPath: '/produits/$univers/'
+      preLoaderRoute: typeof ProduitsUniversIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits/$univers/$sousCategorie': {
+      id: '/produits/$univers/$sousCategorie'
+      path: '/produits/$univers/$sousCategorie'
+      fullPath: '/produits/$univers/$sousCategorie'
+      preLoaderRoute: typeof ProduitsUniversSousCategorieRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -70,7 +478,27 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProduitsRoute: ProduitsRoute,
+  AProposRoute: AProposRoute,
+  CataloguesRoute: CataloguesRoute,
+  CgvRoute: CgvRoute,
+  ConnexionRoute: ConnexionRoute,
+  ContactRoute: ContactRoute,
+  DestockageRoute: DestockageRoute,
+  DevisRoute: DevisRoute,
+  EspaceClientRoute: EspaceClientRoute,
+  EspaceCoutureRoute: EspaceCoutureRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
+  PromotionsRoute: PromotionsRoute,
+  ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  MarquesSlugRoute: MarquesSlugRoute,
+  ProduitSlugRoute: ProduitSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  MarquesIndexRoute: MarquesIndexRoute,
+  ProduitsIndexRoute: ProduitsIndexRoute,
+  ProduitsUniversSousCategorieRoute: ProduitsUniversSousCategorieRoute,
+  ProduitsUniversIndexRoute: ProduitsUniversIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

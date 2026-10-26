@@ -1,23 +1,36 @@
 import {
-  Printer,
-  Scan,
-  ShoppingCart,
-  Monitor,
-  Fingerprint,
-  MonitorPlay,
-  Shredder,
-  Paperclip,
   Armchair,
+  BatteryCharging,
+  Monitor,
+  MonitorPlay,
+  Paperclip,
+  Printer,
+  ScanBarcode,
+  ScanLine,
   Scissors,
+  Shredder,
+  Store,
   type LucideIcon,
 } from "lucide-react";
+
+/** Troisième niveau (facultatif) : affiché comme filtre « Type » dans le catalogue. */
+export interface SubCategory {
+  slug: string;
+  name: string;
+  types?: string[];
+}
 
 export interface Category {
   slug: string;
   name: string;
   icon: LucideIcon;
+  /** Une ligne pour les tuiles et le mega menu */
   blurb: string;
-  subcategories: string[];
+  /** Introduction de l'en-tête catalogue */
+  intro: string;
+  subcategories: SubCategory[];
+  /** Slug du produit mis en avant (mega menu, bento) */
+  featuredProduct?: string;
 }
 
 export const categories: Category[] = [
@@ -25,139 +38,196 @@ export const categories: Category[] = [
     slug: "impression",
     name: "Impression",
     icon: Printer,
-    blurb:
-      "Imprimantes, multifonctions, copieurs et consommables d'origine pour tous les volumes d'impression professionnels.",
+    blurb: "Imprimantes, multifonctions, copieurs, étiquetage et consommables d'origine.",
+    intro:
+      "Du poste individuel au service reprographie : imprimantes laser et jet d'encre, multifonctions, copieurs, imprimantes d'étiquettes, de badges et de bracelets, avec leurs consommables d'origine.",
+    featuredProduct: "brother-mfc-j985dw",
     subcategories: [
-      "Imprimantes laser mono",
-      "Imprimantes laser couleur",
-      "Imprimantes jet d'encre",
-      "Multifonctions",
-      "Copieurs",
-      "Télécopieurs",
-      "Imprimantes mobiles",
-      "Imprimantes à badges",
-      "Imprimantes d'étiquettes",
-      "Étiqueteuses",
-      "Imprimantes à bracelets",
-      "Consommables",
+      {
+        slug: "imprimantes",
+        name: "Imprimantes",
+        types: ["Laser monochrome", "Laser couleur", "Jet d'encre couleur"],
+      },
+      { slug: "multifonctions", name: "Multifonctions", types: ["Monochrome", "Couleur"] },
+      { slug: "copieurs", name: "Copieurs" },
+      { slug: "telecopieurs", name: "Télécopieurs" },
+      { slug: "imprimantes-mobiles", name: "Imprimantes mobiles" },
+      { slug: "imprimantes-badges", name: "Imprimantes badges" },
+      { slug: "imprimantes-etiquettes", name: "Imprimantes d'étiquettes" },
+      { slug: "etiqueteuses", name: "Étiqueteuses" },
+      { slug: "imprimantes-bracelets", name: "Imprimantes à bracelets" },
+      {
+        slug: "consommables",
+        name: "Consommables",
+        types: ["Cartouches", "Toner & Drum", "Rubans & films", "Cartes badges"],
+      },
     ],
   },
   {
     slug: "scanner",
     name: "Scanner",
-    icon: Scan,
-    blurb:
-      "Scanners mobiles, compacts et de bureau, lecteurs de passeports pour la numérisation professionnelle.",
+    icon: ScanLine,
+    blurb: "Scanners mobiles, compacts et de bureau, lecteurs de passeports.",
+    intro:
+      "Numérisez vos documents au bureau comme en mobilité : scanners compacts, scanners de bureau et lecteurs de passeports pour les guichets et l'accueil.",
     subcategories: [
-      "Scanners mobiles",
-      "Scanners compacts & de bureau",
-      "Lecteurs de passeports",
+      { slug: "scanners-mobiles", name: "Scanners mobiles" },
+      { slug: "scanners-compacts-bureau", name: "Scanners compacts & bureau" },
+      { slug: "lecteurs-passeports", name: "Lecteurs de passeports" },
     ],
   },
   {
     slug: "caisse-pos",
     name: "Caisse & POS",
-    icon: ShoppingCart,
-    blurb:
-      "Solutions d'encaissement complètes : caisses, écrans tactiles, terminaux POS, lecteurs de code-barres et logiciels.",
+    icon: Store,
+    blurb: "Caisses enregistreuses, terminaux POS, écrans tactiles et lecteurs code-barres.",
+    intro:
+      "Tout l'encaissement de votre point de vente : caisses enregistreuses, terminaux POS tactiles, afficheurs client, lecteurs code-barres et logiciels de gestion.",
+    featuredProduct: "sharp-xe-a217",
     subcategories: [
-      "Caisses enregistreuses",
-      "Écrans tactiles",
-      "Afficheurs",
-      "Lecteurs de code-barres",
-      "Terminaux POS",
-      "Logiciels de caisse",
+      { slug: "caisses-enregistreuses", name: "Caisses enregistreuses" },
+      { slug: "ecrans-tactiles", name: "Écrans tactiles" },
+      { slug: "afficheurs", name: "Afficheurs" },
+      { slug: "lecteurs-code-barres", name: "Lecteurs code-barres" },
+      { slug: "terminaux-pos", name: "Terminaux POS" },
+      { slug: "logiciels-gestion", name: "Logiciels de gestion" },
     ],
   },
   {
     slug: "informatique",
     name: "Informatique",
     icon: Monitor,
-    blurb:
-      "Ordinateurs, tablettes, terminaux mobiles et accessoires pour équiper vos équipes sur le terrain comme au bureau.",
+    blurb: "Ordinateurs, tablettes, terminaux mobiles et accessoires PC.",
+    intro:
+      "Équipez vos équipes au bureau comme sur le terrain : ordinateurs et tablettes, terminaux mobiles durcis, accessoires, protection et sécurité logicielle.",
+    featuredProduct: "zebra-tc72-tc77-touch",
     subcategories: [
-      "Ordinateurs & tablettes",
-      "Terminaux mobiles",
-      "Mobilité & protection",
-      "Power banks",
-      "Accessoires PC",
-      "Antivirus",
+      { slug: "ordinateurs-tablettes", name: "Ordinateurs & tablettes" },
+      { slug: "terminaux-mobiles", name: "Terminaux mobiles" },
+      { slug: "mobilite-protection", name: "Mobilité & protection", types: ["Cartables", "Packs"] },
+      { slug: "power-banks", name: "Power banks" },
+      {
+        slug: "accessoires-pc",
+        name: "Accessoires PC",
+        types: ["Souris", "Claviers", "Kits souris+clavier"],
+      },
+      { slug: "antivirus", name: "Antivirus" },
     ],
   },
   {
-    slug: "identification",
+    slug: "identification-tracabilite",
     name: "Identification & traçabilité",
-    icon: Fingerprint,
-    blurb:
-      "Marquage, codage et traçabilité industrielle : identification produits, colis et actifs.",
-    subcategories: [
-      "Traçabilité industrielle",
-      "Marquage & codage",
-      "Étiquettes & rubans",
-    ],
+    icon: ScanBarcode,
+    blurb: "Marquage, codage et traçabilité des produits, colis et actifs.",
+    intro:
+      "Solutions d'identification et de traçabilité pour l'industrie et la logistique : marquage, codage et étiquetage avec Zebra, Honeywell, SATO et Videojet.",
+    subcategories: [],
   },
   {
     slug: "multimedia",
     name: "Multimédia",
     icon: MonitorPlay,
-    blurb:
-      "Affichage dynamique, audiovisuel et solutions audio pour vos points de vente et espaces d'accueil.",
-    subcategories: ["Affichage dynamique", "Audiovisuel", "Audio"],
+    blurb: "Affichage dynamique, audiovisuel, sonorisation et audio.",
+    intro:
+      "Affichage dynamique pour vos points de vente, équipements audiovisuels et de sonorisation, casques et enceintes pour vos espaces professionnels.",
+    subcategories: [
+      { slug: "affichage-dynamique", name: "Affichage dynamique" },
+      { slug: "audiovisuel-sonorisation", name: "Audiovisuel & sonorisation" },
+      { slug: "audio", name: "Audio", types: ["Casques", "Enceintes"] },
+    ],
   },
   {
-    slug: "destructeurs",
+    slug: "destructeurs-divers",
     name: "Destructeurs & divers",
     icon: Shredder,
-    blurb:
-      "Destructeurs de documents, compteuses et détecteurs de billets, gestion de file d'attente.",
+    blurb: "Destructeurs, machines à écrire, compteuses de billets, file d'attente.",
+    intro:
+      "Confidentialité et gestion des flux : destructeurs de documents, machines à écrire, compteuses et détecteurs de billets, systèmes de gestion de file d'attente.",
+    featuredProduct: "olympia-ps-53-cc",
     subcategories: [
-      "Destructeurs de documents",
-      "Machines à écrire",
-      "Compteuses de billets",
-      "Détecteurs de faux billets",
-      "Gestion de file d'attente",
+      { slug: "destructeurs-documents", name: "Destructeurs de documents" },
+      { slug: "machines-a-ecrire", name: "Machines à écrire" },
+      { slug: "compteuses-billets", name: "Compteuses de billets" },
+      { slug: "detecteurs-faux-billets", name: "Détecteurs de faux billets" },
+      { slug: "gestion-file-attente", name: "Gestion de file d'attente" },
     ],
   },
   {
-    slug: "fourniture",
+    slug: "fourniture-bureau",
     name: "Fourniture de bureau",
     icon: Paperclip,
-    blurb:
-      "Tout le consommable de bureau pour les entreprises, administrations et revendeurs.",
+    blurb: "Papier, archivage, classement, fournitures et calculatrices.",
+    intro:
+      "Le consommable de bureau au quotidien pour les entreprises, administrations et revendeurs : papier, archivage, classement, petites fournitures et calculatrices.",
     subcategories: [
-      "Écriture & correction",
-      "Classement & archivage",
-      "Papeterie",
-      "Agrafage & perforation",
+      { slug: "papier", name: "Papier" },
+      { slug: "boites-sacs-archives", name: "Boîtes & sacs d'archives" },
+      { slug: "chemises-carte-lustree", name: "Chemises en carte lustrée" },
+      { slug: "jeux-intercalaires", name: "Jeux d'intercalaires" },
+      { slug: "fournitures", name: "Fournitures" },
+      { slug: "calculatrices", name: "Calculatrices" },
     ],
   },
   {
-    slug: "mobilier",
+    slug: "mobilier-bureau",
     name: "Mobilier de bureau",
     icon: Armchair,
-    blurb:
-      "Aménagement d'espaces de travail : sièges, tables, rangements et accessoires.",
+    blurb: "Chaises, fauteuils de direction, bureaux, banquettes et open space.",
+    intro:
+      "Aménagez des espaces de travail durables : sièges, fauteuils de direction, bureaux, tables basses, banquettes d'accueil et postes open space.",
+    featuredProduct: "bureau-dg-3023-131375",
     subcategories: [
-      "Sièges & fauteuils",
-      "Tables & bureaux",
-      "Rangements",
-      "Accessoires de bureau",
+      { slug: "chaises-bureau", name: "Chaises de bureau" },
+      { slug: "fauteuils-direction", name: "Fauteuils de direction" },
+      { slug: "tables-basses", name: "Tables basses" },
+      { slug: "bureaux-direction", name: "Bureaux de direction" },
+      { slug: "banquettes", name: "Banquettes" },
+      { slug: "open-space", name: "Open space" },
     ],
   },
   {
-    slug: "couture",
-    name: "Espace couture",
-    icon: Scissors,
-    blurb:
-      "Broderie, couture et création : machines, surjeteuses et solutions Scan N Cut.",
-    subcategories: [
-      "Broderie & couture",
-      "Surjeteuses",
-      "Scan N Cut",
-      "Accessoires",
-    ],
+    slug: "onduleurs",
+    name: "Onduleurs",
+    icon: BatteryCharging,
+    blurb: "Protection électrique de vos postes, serveurs et équipements.",
+    intro:
+      "Protégez vos équipements contre les coupures et variations de tension : onduleurs pour postes de travail, points de vente et salles serveurs.",
+    subcategories: [],
   },
 ];
 
-export const getCategory = (slug: string) =>
-  categories.find((c) => c.slug === slug);
+/** Sous-univers « Espace couture » — page dédiée /espace-couture. */
+export const coutureUniverse: Category = {
+  slug: "espace-couture",
+  name: "Espace couture",
+  icon: Scissors,
+  blurb: "Machines à coudre et à broder, surjeteuses, Scan N Cut et accessoires.",
+  intro:
+    "Machines à coudre et à broder Brother, Alfa, Jaki et Jack, surjeteuses et recouvreuses, Scan N Cut, machines de découpe et accessoires d'origine.",
+  subcategories: [
+    { slug: "broderie-couture", name: "Broderie & couture" },
+    { slug: "surjeteuses-recouvreuses", name: "Surjeteuses / Recouvreuses" },
+    { slug: "scan-n-cut", name: "Scan N Cut" },
+    { slug: "machines-decoupe", name: "Machines de découpe" },
+    { slug: "accessoires", name: "Accessoires" },
+  ],
+};
+
+export const allUniverses: Category[] = [...categories, coutureUniverse];
+
+export const getCategory = (slug: string) => allUniverses.find((c) => c.slug === slug);
+
+export const getSubcategory = (universeSlug: string, subSlug: string) =>
+  getCategory(universeSlug)?.subcategories.find((s) => s.slug === subSlug);
+
+/** Libellés des attributs techniques utilisés comme filtres. */
+export const attributeLabels: Record<string, string> = {
+  "laser-mono": "Laser monochrome",
+  "laser-couleur": "Laser couleur",
+  "jet-encre": "Jet d'encre",
+  multifonction: "Multifonction",
+  wifi: "Wi-Fi",
+};
+
+/** Univers où les attributs techniques sont pertinents. */
+export const universesWithAttributes = ["impression"];

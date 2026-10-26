@@ -1,16 +1,16 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Minus, Plus, ShoppingBasket, Trash2, X } from "lucide-react";
-import { toast } from "sonner";
+import { FileText, Trash2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useQuote, quoteLines } from "@/lib/quote";
-import { ProductImage } from "@/components/site/motion-primitives";
-import { LockedPrice } from "@/components/site/locked-price";
+import { ProductVisual } from "@/components/site/product-visual";
+import { QuantityStepper } from "@/components/site/layout-primitives";
 
 export function QuoteDrawer() {
   const { items, isOpen, setOpen, setQty, remove, count } = useQuote();
@@ -19,77 +19,81 @@ export function QuoteDrawer() {
 
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
-      <SheetContent side="right" className="flex w-full flex-col p-0 sm:max-w-md">
-        <SheetHeader className="border-b px-5 py-4">
-          <SheetTitle className="flex items-center justify-between font-display text-base font-semibold">
-            <span className="flex items-center gap-2">
-              <ShoppingBasket className="size-5 text-primary" aria-hidden />
-              Mon panier de devis
-            </span>
-            <span className="rounded-full bg-muted px-2.5 py-0.5 font-mono text-xs text-muted-foreground">
+      <SheetContent side="right" className="flex w-full flex-col gap-0 p-0 sm:max-w-md">
+        <SheetHeader className="border-b border-border px-5 py-4 text-left">
+          <SheetTitle className="flex items-center gap-2 font-display text-base font-semibold">
+            <FileText className="size-5 text-primary" aria-hidden />
+            Ma demande de devis
+            <span className="ml-1 rounded-full bg-muted px-2.5 py-0.5 font-mono text-xs font-normal text-muted-foreground">
               {count} article{count > 1 ? "s" : ""}
             </span>
           </SheetTitle>
+          <SheetDescription className="text-xs">
+            Sans engagement — tarifs professionnels communiqués par nos conseillers.
+          </SheetDescription>
         </SheetHeader>
 
         {lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
-            <ShoppingBasket className="size-10 text-muted-foreground/50" aria-hidden />
-            <p className="font-medium text-foreground">Votre panier de devis est vide</p>
-            <p className="text-sm text-muted-foreground">
-              Parcourez le catalogue et ajoutez les produits qui vous intéressent.
+            <span className="inline-flex size-14 items-center justify-center rounded-2xl bg-blue-tint text-primary">
+              <FileText className="size-7" aria-hidden />
+            </span>
+            <p className="mt-2 font-display font-semibold text-foreground">
+              Votre demande de devis est vide
             </p>
-            <Button asChild className="mt-2" variant="outline">
-              <Link to="/produits" onClick={() => setOpen(false)}>
-                Explorer le catalogue
-              </Link>
-            </Button>
+            <p className="text-sm text-muted-foreground">
+              Ajoutez des produits depuis le catalogue, ou décrivez directement votre besoin.
+            </p>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <Button asChild variant="outline">
+                <Link to="/produits" onClick={() => setOpen(false)}>
+                  Explorer le catalogue
+                </Link>
+              </Button>
+              <Button asChild variant="cta">
+                <Link to="/devis" onClick={() => setOpen(false)}>
+                  Décrire mon besoin
+                </Link>
+              </Button>
+            </div>
           </div>
         ) : (
           <>
-            <ul className="flex-1 divide-y overflow-y-auto">
+            <ul className="flex-1 divide-y divide-border overflow-y-auto">
               {lines.map(({ product, qty }) => (
                 <li key={product.id} className="flex gap-3 px-5 py-4">
-                  <ProductImage
-                    src={product.image}
-                    alt={`${product.name} — réf. ${product.reference}`}
-                    className="size-16 shrink-0 rounded-md border border-border bg-white object-contain p-1"
+                  <ProductVisual
+                    product={product}
+                    compact
+                    width={64}
+                    height={64}
+                    className="product-surface size-16 shrink-0 rounded-lg border border-border"
+                    imgClassName="p-1.5"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{product.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground">
+                    <Link
+                      to="/produit/$slug"
+                      params={{ slug: product.slug }}
+                      onClick={() => setOpen(false)}
+                      className="line-clamp-2 text-sm font-medium hover:text-primary"
+                    >
+                      {product.name}
+                    </Link>
+                    <p className="font-mono text-[11px] text-muted-foreground">
                       Réf. {product.reference}
                     </p>
                     <div className="mt-2 flex items-center gap-2">
-                      <div className="flex items-center rounded-md border border-input">
-                        <button
-                          type="button"
-                          onClick={() => setQty(product.id, qty - 1)}
-                          className="flex size-7 items-center justify-center text-muted-foreground hover:text-foreground"
-                          aria-label={`Retirer une unité de ${product.name}`}
-                        >
-                          <Minus className="size-3.5" aria-hidden />
-                        </button>
-                        <span className="w-8 text-center font-mono text-sm" aria-live="polite">
-                          {qty}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setQty(product.id, qty + 1)}
-                          className="flex size-7 items-center justify-center text-muted-foreground hover:text-foreground"
-                          aria-label={`Ajouter une unité de ${product.name}`}
-                        >
-                          <Plus className="size-3.5" aria-hidden />
-                        </button>
-                      </div>
+                      <QuantityStepper
+                        size="sm"
+                        value={qty}
+                        onChange={(v) => setQty(product.id, v)}
+                        label={product.name}
+                      />
                       <button
                         type="button"
-                        onClick={() => {
-                          remove(product.id);
-                          toast.success(`${product.name} retiré du devis`);
-                        }}
-                        className="ml-auto flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                        aria-label={`Retirer ${product.name} du devis`}
+                        onClick={() => remove(product.id)}
+                        className="ml-auto inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                        aria-label={`Retirer ${product.name} de la demande`}
                       >
                         <Trash2 className="size-4" aria-hidden />
                       </button>
@@ -99,20 +103,20 @@ export function QuoteDrawer() {
               ))}
             </ul>
 
-            <div className="border-t bg-muted/50 px-5 py-4">
-              <LockedPrice className="mb-3 justify-center" />
+            <div className="border-t border-border bg-muted/40 px-5 py-4">
               <Button
-                className="w-full bg-cta text-cta-foreground hover:bg-cta-hover"
-                size="lg"
+                variant="cta"
+                size="xl"
+                className="w-full"
                 onClick={() => {
                   setOpen(false);
-                  navigate({ to: "/devis" });
+                  void navigate({ to: "/devis" });
                 }}
               >
-                Finaliser ma demande de devis
+                Finaliser ma demande
               </Button>
               <p className="mt-2 text-center text-xs text-muted-foreground">
-                Sans engagement — un conseiller vous répond rapidement.
+                Un conseiller vous répond avec une offre adaptée.
               </p>
             </div>
           </>
@@ -121,9 +125,3 @@ export function QuoteDrawer() {
     </Sheet>
   );
 }
-
-export function QuoteDrawerTriggerFloating() {
-  return null;
-}
-
-export { X as QuoteCloseIcon };

@@ -1,8 +1,9 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { cn } from "@/lib/utils";
 
-/** Scroll reveal : fade + montée, avec décalage en cascade via `delay`. */
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Scroll reveal : fondu + montée de 16px, déclenché une fois à ~20 % dans la vue. */
 export function Reveal({
   children,
   delay = 0,
@@ -12,37 +13,93 @@ export function Reveal({
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "section" | "li" | "span";
+  as?: "div" | "section" | "li" | "span" | "article";
 }) {
-  const reduced = useReducedMotion();
   const Comp = motion[as];
+  // Valeurs initiales identiques serveur/client ; MotionConfig(reducedMotion="user")
+  // supprime les déplacements quand prefers-reduced-motion est actif.
   return (
     <Comp
       className={className}
-      initial={reduced ? false : { opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay, ease: EASE }}
     >
       {children}
     </Comp>
   );
 }
 
-/** Compteur animé au scroll (statistiques). */
+const staggerParent: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+
+const staggerChild: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+};
+
+/** Conteneur dont les enfants <RevealItem> apparaissent en cascade (60 ms). */
+export function RevealGroup({
+  children,
+  className,
+  as = "div",
+}: {
+  children: ReactNode;
+  className?: string;
+  as?: "div" | "ul" | "ol";
+}) {
+  const Comp = motion[as];
+  return (
+    <Comp
+      className={className}
+      variants={staggerParent}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: "some", margin: "0px 0px -8% 0px" }}
+    >
+      {children}
+    </Comp>
+  );
+}
+
+export function RevealItem({
+  children,
+  className,
+  as = "div",
+}: {
+  children: ReactNode;
+  className?: string;
+  as?: "div" | "li" | "article";
+}) {
+  const Comp = motion[as];
+  return (
+    <Comp className={className} variants={staggerChild}>
+      {children}
+    </Comp>
+  );
+}
+
+/** Compteur animé au scroll (statistiques). Désactivé si prefers-reduced-motion. */
 export function CountUp({
   to,
+  from = 0,
   suffix = "",
+  prefix = "",
   duration = 1.6,
   className,
 }: {
   to: number;
+  from?: number;
   suffix?: string;
+  prefix?: string;
   duration?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(to);
   const started = useRef(false);
   const reduced = useReducedMotion();
 
@@ -53,6 +110,7 @@ export function CountUp({
     }
     const el = ref.current;
     if (!el) return;
+    setValue(from);
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting && !started.current) {
@@ -60,7 +118,7 @@ export function CountUp({
           const start = performance.now();
           const tick = (now: number) => {
             const p = Math.min((now - start) / (duration * 1000), 1);
-            setValue(Math.round(to * (1 - Math.pow(1 - p, 3))));
+            setValue(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))));
             if (p < 1) requestAnimationFrame(tick);
           };
           requestAnimationFrame(tick);
@@ -70,50 +128,13 @@ export function CountUp({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [to, duration, reduced]);
+  }, [to, from, duration, reduced]);
 
   return (
     <span ref={ref} className={className}>
+      {prefix}
       {value}
       {suffix}
     </span>
-  );
-}
-
-export const staggerParent: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
-};
-
-export const staggerChild: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-/** Image produit avec repli sur la silhouette neutre en cas d'erreur de chargement. */
-export function ProductImage({
-  src,
-  alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) {
-  const [current, setCurrent] = useState(src);
-  useEffect(() => setCurrent(src), [src]);
-  return (
-    <img
-      src={current}
-      alt={alt}
-      loading="lazy"
-      decoding="async"
-      onError={() => setCurrent("/images/placeholder-product.svg")}
-      className={cn(className)}
-    />
   );
 }
