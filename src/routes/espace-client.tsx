@@ -115,13 +115,13 @@ const savStatusCls: Record<SavStatus, string> = {
   Clôturée: "bg-muted text-muted-foreground",
 };
 
-const nav: { id: View; label: string; icon: LucideIcon }[] = [
-  { id: "tableau-de-bord", label: "Tableau de bord", icon: LayoutDashboard },
-  { id: "devis", label: "Mes devis", icon: FileText },
-  { id: "prix", label: "Mes prix pro", icon: Tag },
-  { id: "documents", label: "Documents", icon: FolderOpen },
-  { id: "sav", label: "SAV", icon: Wrench },
-  { id: "compte", label: "Mon compte", icon: UserRound },
+const nav: { id: View; label: string; short: string; icon: LucideIcon }[] = [
+  { id: "tableau-de-bord", label: "Tableau de bord", short: "Accueil", icon: LayoutDashboard },
+  { id: "devis", label: "Mes devis", short: "Devis", icon: FileText },
+  { id: "prix", label: "Mes prix pro", short: "Prix pro", icon: Tag },
+  { id: "documents", label: "Documents", short: "Documents", icon: FolderOpen },
+  { id: "sav", label: "SAV", short: "SAV", icon: Wrench },
+  { id: "compte", label: "Mon compte", short: "Compte", icon: UserRound },
 ];
 
 const fmtDate = (iso: string) =>
@@ -152,9 +152,9 @@ function Panel({
   className?: string;
 }) {
   return (
-    <section className={cn("card-hairline overflow-hidden", className)}>
-      <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
-        <h2 className="font-display font-semibold">{title}</h2>
+    <section className={cn("card-hairline min-w-0 overflow-hidden", className)}>
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-border px-4 py-3.5 sm:px-5 sm:py-4">
+        <h2 className="min-w-0 font-display font-semibold">{title}</h2>
         {action}
       </div>
       {children}
@@ -253,24 +253,24 @@ function Dashboard({ go }: { go: (v: View) => void }) {
     <div className="space-y-6">
       <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {kpis.map((k) => (
-          <li key={k.label}>
+          <li key={k.label} className="min-w-0">
             <button
               type="button"
               onClick={() => go(k.view)}
-              className="card-hairline card-lift group flex w-full flex-col p-5 text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+              className="card-hairline card-lift group flex h-full w-full flex-col p-4 text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none sm:p-5"
             >
               <div className="flex items-center justify-between">
                 <k.icon className="size-5 text-primary" aria-hidden />
                 <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
               </div>
-              <p className="mt-4 font-display text-3xl font-bold">{k.value}</p>
-              <p className="text-xs text-muted-foreground">{k.label}</p>
+              <p className="mt-3 font-display text-2xl font-bold sm:mt-4 sm:text-3xl">{k.value}</p>
+              <p className="text-xs leading-snug text-muted-foreground">{k.label}</p>
             </button>
           </li>
         ))}
       </ul>
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <Panel
           title="Derniers devis"
           className="xl:col-span-2"
@@ -282,8 +282,8 @@ function Dashboard({ go }: { go: (v: View) => void }) {
         >
           <ul className="divide-y divide-border">
             {quotes.slice(0, 3).map((q) => (
-              <li key={q.ref} className="flex items-center gap-4 px-5 py-3.5">
-                <div className="flex -space-x-2" aria-hidden>
+              <li key={q.ref} className="flex items-center gap-3 px-4 py-3.5 sm:gap-4 sm:px-5">
+                <div className="hidden -space-x-2 min-[420px]:flex" aria-hidden>
                   {q.lines.slice(0, 2).map((l, i) =>
                     l.p ? (
                       <div key={i} className="product-surface size-10 overflow-hidden rounded-lg border-2 border-card">
@@ -303,13 +303,13 @@ function Dashboard({ go }: { go: (v: View) => void }) {
             ))}
           </ul>
         </Panel>
-        <div className="space-y-6">
+        <div className="grid min-w-0 gap-6 md:grid-cols-2 xl:grid-cols-1">
           <InfoCard go={go} />
           <AdvisorCard />
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {[
           { label: "Nouvelle demande de devis", icon: Plus, to: "/devis" as const },
           { label: "Demander une intervention", icon: Wrench, to: "/services" as const },
@@ -356,7 +356,7 @@ function QuotesView() {
                 type="button"
                 onClick={() => setOpen(isOpen ? null : q.ref)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-background"
+                className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-background sm:gap-4 sm:px-5"
               >
                 <div className="min-w-0 flex-1">
                   <p className="font-mono text-sm font-semibold">{q.ref}</p>
@@ -368,7 +368,7 @@ function QuotesView() {
                 <ChevronDown className={cn("size-4 text-muted-foreground transition-transform", isOpen && "rotate-180")} aria-hidden />
               </button>
               {isOpen && (
-                <div className="border-t border-border bg-background/60 px-5 py-4">
+                <div className="border-t border-border bg-background/60 px-4 py-4 sm:px-5">
                   <ul className="space-y-2">
                     {q.lines.map((l, i) =>
                       l.p ? (
@@ -382,12 +382,12 @@ function QuotesView() {
                             </Link>
                             <p className="font-mono text-[11px] text-muted-foreground">{l.p.reference}</p>
                           </div>
-                          <span className="font-mono text-sm">× {l.qty}</span>
+                          <span className="shrink-0 font-mono text-sm">× {l.qty}</span>
                         </li>
                       ) : null,
                     )}
                   </ul>
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-4 grid gap-2 min-[420px]:flex min-[420px]:flex-wrap">
                     {q.status === "Offre envoyée" && (
                       <Button size="sm" variant="cta" onClick={demoToast}>
                         <BadgeCheck aria-hidden />
@@ -420,41 +420,45 @@ function PricesView() {
     <Panel
       title="Mes prix professionnels"
       action={
-        <div className="relative hidden sm:block">
+        <div className="relative w-full sm:w-auto">
           <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Référence…"
+            placeholder="Nom, référence, marque…"
             aria-label="Rechercher une référence"
-            className="h-9 w-56 rounded-lg border border-input bg-card pr-3 pl-9 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="h-10 w-full rounded-lg border border-input bg-card pr-3 pl-9 text-base outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-9 sm:w-56 sm:text-sm"
           />
         </div>
       }
     >
-      <p className="flex items-center gap-2 border-b border-border bg-blue-tint/50 px-5 py-3 text-xs text-primary">
-        <Lock className="size-3.5" aria-hidden />
+      <p className="flex items-start gap-2 border-b border-border bg-blue-tint/50 px-4 py-3 text-xs text-primary sm:items-center sm:px-5">
+        <Lock className="mt-0.5 size-3.5 shrink-0 sm:mt-0" aria-hidden />
         Vos prix négociés s'afficheront ici à l'ouverture de votre espace. Aucun prix n'est affiché dans cette démonstration.
       </p>
+      {list.length === 0 && (
+        <p className="px-5 py-10 text-center text-sm text-muted-foreground">Aucune référence ne correspond à « {q} ».</p>
+      )}
       <ul className="divide-y divide-border">
         {list.map((p) => (
-          <li key={p.id} className="flex items-center gap-4 px-5 py-3">
-            <div className="product-surface size-12 shrink-0 overflow-hidden rounded-lg border border-border">
+          <li key={p.id} className="flex items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5">
+            <div className="product-surface size-11 shrink-0 overflow-hidden rounded-lg border border-border sm:size-12">
               <ProductVisual product={p} width={48} height={48} className="size-full" imgClassName="p-1" />
             </div>
             <div className="min-w-0 flex-1">
-              <Link to="/produit/$slug" params={{ slug: p.slug }} className="line-clamp-1 text-sm font-medium hover:text-primary">
+              <Link to="/produit/$slug" params={{ slug: p.slug }} className="line-clamp-2 text-sm font-medium hover:text-primary sm:line-clamp-1">
                 {p.name}
               </Link>
-              <div className="mt-0.5 flex items-center gap-2">
-                <BrandLogo slug={p.brand} size="sm" className="h-3" />
-                <span className="font-mono text-[11px] text-muted-foreground">{p.reference}</span>
+              <div className="mt-0.5 flex min-w-0 items-center gap-2">
+                <BrandLogo slug={p.brand} size="sm" className="hidden h-3 min-[420px]:block" />
+                <span className="truncate font-mono text-[11px] text-muted-foreground">{p.reference}</span>
               </div>
             </div>
-            <div className="text-right">
+            <div className="shrink-0 text-right">
               <p className="font-mono text-sm font-semibold tracking-widest text-muted-foreground select-none" aria-label="Prix masqué">
-                ••••,•• <span className="text-[10px] tracking-normal">MAD HT</span>
+                ••••,••
+                <span className="block text-[10px] tracking-normal sm:ml-1 sm:inline">MAD HT</span>
               </p>
               <p className="text-[10px] text-muted-foreground">Prix négocié</p>
             </div>
@@ -470,7 +474,7 @@ function DocumentsView() {
     <Panel title="Mes documents">
       <ul className="divide-y divide-border">
         {documents.map((d) => (
-          <li key={d.name} className="flex items-center gap-4 px-5 py-3.5">
+          <li key={d.name} className="flex items-center gap-3 px-4 py-3.5 sm:gap-4 sm:px-5">
             <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-tint text-primary">
               <d.icon className="size-4" aria-hidden />
             </span>
@@ -480,8 +484,8 @@ function DocumentsView() {
                 {d.kind} · {fmtDate(d.date)} · PDF
               </p>
             </div>
-            <div className="flex gap-1">
-              <Button size="icon" variant="ghost" onClick={demoToast} aria-label={`Aperçu ${d.name}`}>
+            <div className="flex shrink-0 gap-1">
+              <Button size="icon" variant="ghost" className="hidden min-[420px]:inline-flex" onClick={demoToast} aria-label={`Aperçu ${d.name}`}>
                 <Eye aria-hidden />
               </Button>
               <Button size="icon" variant="outline" onClick={demoToast} aria-label={`Télécharger ${d.name}`}>
@@ -511,10 +515,10 @@ function SavView() {
       >
         <ul className="divide-y divide-border">
           {tickets.map((t) => (
-            <li key={t.ref} className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:gap-4">
+            <li key={t.ref} className="flex flex-col items-start gap-2 px-4 py-4 sm:flex-row sm:items-center sm:gap-4 sm:px-5">
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium">{t.subject}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs break-words text-muted-foreground">
                   <span className="font-mono">{t.ref}</span> · Équipement <span className="font-mono">{t.device}</span> ·{" "}
                   {fmtDate(t.date)}
                 </p>
@@ -524,7 +528,7 @@ function SavView() {
           ))}
         </ul>
       </Panel>
-      <section className="card-hairline flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+      <section className="card-hairline flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:p-5">
         <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-tint text-primary">
           <BadgeCheck className="size-5" aria-hidden />
         </span>
@@ -540,7 +544,7 @@ function SavView() {
 function AccountView({ onLogout }: { onLogout: () => void }) {
   const rows = infoRows();
   return (
-    <div className="grid gap-6 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
       <Panel
         title="Mes informations"
         className="xl:col-span-2"
@@ -550,28 +554,28 @@ function AccountView({ onLogout }: { onLogout: () => void }) {
           </Button>
         }
       >
-        <div className="flex items-center gap-4 border-b border-border px-5 py-5">
+        <div className="flex items-center gap-4 border-b border-border px-4 py-5 sm:px-5">
           <span className="inline-flex size-14 shrink-0 items-center justify-center rounded-full bg-primary font-display text-xl font-bold text-primary-foreground">
             {initials}
           </span>
-          <div>
+          <div className="min-w-0">
             <p className="font-display text-lg font-semibold">{fullName}</p>
             <p className="text-sm text-muted-foreground">Client depuis {account.since}</p>
           </div>
         </div>
         <dl className="divide-y divide-border">
           {rows.map((r) => (
-            <div key={r.label} className="grid grid-cols-[110px_1fr] items-start gap-4 px-5 py-3.5 text-sm sm:grid-cols-[160px_1fr]">
-              <dt className="flex items-center gap-2 text-muted-foreground">
+            <div key={r.label} className="grid grid-cols-1 items-start gap-1 px-4 py-3.5 text-sm sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-4 sm:px-5">
+              <dt className="flex items-center gap-2 text-xs text-muted-foreground sm:text-sm">
                 <r.icon className="size-4 text-primary" aria-hidden />
                 {r.label}
               </dt>
-              <dd className="font-medium break-words">{r.value}</dd>
+              <dd className="pl-6 font-medium break-words sm:pl-0">{r.value}</dd>
             </div>
           ))}
         </dl>
       </Panel>
-      <div className="space-y-4">
+      <div className="min-w-0 space-y-4">
         <AdvisorCard />
         <Button variant="outline" className="w-full" onClick={onLogout}>
           <LogOut aria-hidden />
@@ -600,35 +604,38 @@ function EspaceClientPage() {
     <>
       {/* Bandeau démo */}
       <div className="border-b border-border bg-warm">
-        <p className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2.5 text-xs text-warm-foreground sm:px-6 lg:px-8">
-          <Eye className="size-3.5 shrink-0" aria-hidden />
-          Aperçu de démonstration — données fictives. L'espace client sera relié à votre compte à son ouverture.
+        <p className="mx-auto flex max-w-7xl items-start gap-2 px-4 py-2.5 text-xs text-warm-foreground sm:items-center sm:px-6 lg:px-8">
+          <Eye className="mt-0.5 size-3.5 shrink-0 sm:mt-0" aria-hidden />
+          <span>
+            Aperçu de démonstration — données fictives.
+            <span className="hidden sm:inline"> L'espace client sera relié à votre compte à son ouverture.</span>
+          </span>
         </p>
       </div>
 
       {/* En-tête */}
       <section className="crop-marks relative overflow-hidden bg-ink text-ink-foreground">
         <div className="dot-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-4 pt-6 pb-10 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 pt-5 pb-8 sm:px-6 sm:pt-6 sm:pb-10 lg:px-8">
           <div className="[&_a]:text-ink-muted [&_a:hover]:text-ink-foreground [&_*]:text-ink-muted">
             <Breadcrumbs items={[{ label: "Accueil", to: "/" }, { label: "Espace client" }]} />
           </div>
-          <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div className="flex items-center gap-4">
-              <span className="inline-flex size-14 items-center justify-center rounded-full bg-cta font-display text-xl font-bold text-cta-foreground">
+          <div className="mt-6 flex flex-col gap-5 sm:mt-8 md:flex-row md:items-end md:justify-between">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+              <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-cta font-display text-lg font-bold text-cta-foreground sm:size-14 sm:text-xl">
                 {initials}
               </span>
-              <div>
+              <div className="min-w-0">
                 <p className="font-mono text-[11px] tracking-wider text-ink-muted uppercase">Espace client</p>
-                <h1 className="font-display text-2xl font-semibold sm:text-3xl">Bonjour, {account.firstName}</h1>
+                <h1 className="truncate font-display text-2xl font-semibold sm:text-3xl">Bonjour, {account.firstName}</h1>
                 <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-muted">
                   <span className="inline-flex items-center gap-1 rounded-full bg-success/20 px-2 py-0.5 font-semibold text-ink-foreground">
                     <BadgeCheck className="size-3" aria-hidden />
                     Compte validé
                   </span>
-                  <span className="inline-flex items-center gap-1">
-                    <Mail className="size-3" aria-hidden />
-                    {account.email}
+                  <span className="hidden min-w-0 items-center gap-1 sm:inline-flex">
+                    <Mail className="size-3 shrink-0" aria-hidden />
+                    <span className="truncate">{account.email}</span>
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <MapPin className="size-3" aria-hidden />
@@ -637,7 +644,7 @@ function EspaceClientPage() {
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-[1fr_auto] gap-2 sm:flex">
               <Button variant="cta" asChild>
                 <Link to="/devis">
                   <Plus aria-hidden />
@@ -645,7 +652,7 @@ function EspaceClientPage() {
                 </Link>
               </Button>
               <Button variant="ghost-dark" asChild>
-                <a href={`mailto:${site.email}`}>
+                <a href={`mailto:${site.email}`} aria-label="Écrire à Polytel">
                   <Mail aria-hidden />
                   <span className="hidden sm:inline">Écrire</span>
                 </a>
@@ -655,26 +662,30 @@ function EspaceClientPage() {
         </div>
       </section>
 
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 md:py-12 lg:grid-cols-12 lg:px-8">
-        {/* Navigation */}
-        <aside className="lg:col-span-3">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 md:py-12 lg:grid-cols-12 lg:gap-8 lg:px-8">
+        {/* Navigation : grille de tuiles sur mobile, liste verticale à partir de lg */}
+        <aside className="min-w-0 lg:col-span-3">
           <nav aria-label="Espace client" className="lg:sticky lg:top-36">
-            <ul className="no-scrollbar -mx-4 flex gap-1 overflow-x-auto px-4 lg:mx-0 lg:flex-col lg:px-0">
+            <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6 lg:flex lg:flex-col lg:gap-1">
               {nav.map((n) => {
                 const active = n.id === view;
                 return (
-                  <li key={n.id} className="shrink-0">
+                  <li key={n.id} className="min-w-0">
                     <button
                       type="button"
                       onClick={() => go(n.id)}
-                      aria-current={active ? "page" : undefined}
+                      {...(active ? { "aria-current": "page" as const } : {})}
                       className={cn(
-                        "flex h-10 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
-                        active ? "bg-primary text-primary-foreground" : "text-foreground/80 hover:bg-muted",
+                        "flex w-full flex-col items-center justify-center gap-1.5 rounded-xl border px-1 py-3 text-[11px] font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                        "lg:h-10 lg:flex-row lg:justify-start lg:gap-3 lg:rounded-lg lg:border-0 lg:px-3 lg:py-0 lg:text-sm lg:font-medium",
+                        active
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-card text-foreground/80 hover:bg-muted lg:bg-transparent",
                       )}
                     >
-                      <n.icon className="size-4" aria-hidden />
-                      {n.label}
+                      <n.icon className="size-4 shrink-0" aria-hidden />
+                      <span className="max-w-full truncate lg:hidden">{n.short}</span>
+                      <span className="hidden truncate lg:inline">{n.label}</span>
                     </button>
                   </li>
                 );
